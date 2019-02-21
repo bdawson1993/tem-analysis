@@ -24,6 +24,7 @@ public:
 	vector<string> Day();
 	vector<string> Time();
 	vector<int> AirTemp();
+	void Table(int index);
 
 
 private:

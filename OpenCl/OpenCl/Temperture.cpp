@@ -6,8 +6,8 @@ void Temperture::ReadFile(string name)
 	ifstream dataFile;
 	dataFile.open(name, ifstream::in);
 
+	//read file
 	string line;
-	
 	while (getline(dataFile, line))
 	{
 		//split line using iterator
@@ -15,6 +15,7 @@ void Temperture::ReadFile(string name)
 		vector<string> splitLine((istream_iterator<string>(splitStream)),
 			istream_iterator<string>());
 
+		//add data to vectors
 		stationName.push_back(splitLine[0]);
 		year.push_back(splitLine[1]);
 		month.push_back(splitLine[2]);
@@ -24,6 +25,9 @@ void Temperture::ReadFile(string name)
 
 
 	}
+	cout << " Loaded " << stationName.size() << " Records" << endl;
+
+	dataFile.close();
 }
 
 vector<string> Temperture::StationName()
@@ -54,4 +58,10 @@ vector<string> Temperture::Time()
 vector<int> Temperture::AirTemp()
 {
 	return airTemp;
+}
+
+void Temperture::Table(int index)
+{
+	cout << stationName[index] << " " << year[index] << " " << month[index] << " " << day[index]
+		<< " " << time[index] << " " << airTemp[index] << endl;
 }
