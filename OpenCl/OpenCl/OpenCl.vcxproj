@@ -161,6 +161,7 @@ echo "Copied Data Files"</Command>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Temperture.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OpenCl.cpp" />
@@ -171,6 +172,7 @@ echo "Copied Data Files"</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Temperture.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="D:\Downloads\temp_lincolnshire_datasets\readme.txt">
