@@ -25,3 +25,33 @@ void Temperture::ReadFile(string name)
 
 	}
 }
+
+vector<string> Temperture::StationName()
+{
+	return stationName;
+}
+
+vector<string> Temperture::Year()
+{
+	return year;
+}
+
+vector<string> Temperture::Month()
+{
+	return month;
+}
+
+vector<string> Temperture::Day()
+{
+	return day;
+}
+
+vector<string> Temperture::Time()
+{
+	return time;
+}
+
+vector<int> Temperture::AirTemp()
+{
+	return airTemp;
+}
