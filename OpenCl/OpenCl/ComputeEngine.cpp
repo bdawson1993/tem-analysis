@@ -49,7 +49,7 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, int size, vector<int> data)
 }
 
 ///Execute the kernal code
-void ComputeEngine::Execute(const char* funName, int size, int* output)
+void ComputeEngine::Execute(const char* funName, int size, int& output)
 {
 	try
 	{
@@ -60,6 +60,7 @@ void ComputeEngine::Execute(const char* funName, int size, int* output)
 		}
 		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(size), cl::NullRange);
 		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, sizeof(int), &output);
+		
 	}
 	catch (const cl::Error& err)
 	{
