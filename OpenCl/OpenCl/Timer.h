@@ -10,7 +10,18 @@ namespace Timer
 
 	clock_t timer;
 	void StartTimer();
-	void EndTimer();
+	void EndTimer(string name);
 
+	void StartTimer()
+	{
+		timer = clock();
+	}
+
+	void EndTimer(string name)
+	{
+		timer = clock() - timer;
+		cout << name << " took " << (float)timer / CLOCKS_PER_SEC << " seconds" << endl;
+
+	}
 
 }

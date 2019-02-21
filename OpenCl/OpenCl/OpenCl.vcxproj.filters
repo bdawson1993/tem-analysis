@@ -39,9 +39,6 @@
     <ClCompile Include="Temperture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="D:\Downloads\temp_lincolnshire_datasets\readme.txt">

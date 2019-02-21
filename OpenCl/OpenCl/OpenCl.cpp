@@ -5,16 +5,20 @@
 #include <iostream>
 #include <CL/opencl.h>
 #include "Temperture.h"
+#include "Timer.h"
 
 int main()
 {
 	Temperture temp;
 
+	//load files
 	cout << "Loading Files" << endl;
+	Timer::StartTimer();
 	temp.ReadFile("temp_lincolnshire_short.txt");
 	cout << "Files Loaded" << endl;
+	Timer::EndTimer("File Loading");
 
-	temp.Table(1);
+	
 
 
 	system("pause");
