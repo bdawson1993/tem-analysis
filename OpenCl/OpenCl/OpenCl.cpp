@@ -8,7 +8,14 @@
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	Temperture temp;
+
+	cout << "Loading Files" << endl;
+	temp.ReadFile("temp_lincolnshire_short.txt");
+	cout << "Files Loaded" << endl;
+
+
+	system("pause");
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

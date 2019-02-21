@@ -115,8 +115,8 @@
       <AdditionalLibraryDirectories>$(CUDA_PATH)/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy temp_lincolnshire.txt $(OutputPath)
-xcopy temp_lincolnshire_short.txt $(OutputPath)
+      <Command>xcopy temp_lincolnshire.txt $(OutputPath) /y
+xcopy temp_lincolnshire_short.txt $(OutputPath) /y
 echo "Copied Data Files"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
