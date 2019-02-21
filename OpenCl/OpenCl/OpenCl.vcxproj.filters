@@ -17,6 +17,10 @@
       <UniqueIdentifier>{045e8b4c-721a-4fd3-8df2-42c38841950b}</UniqueIdentifier>
       <Extensions>.txt</Extensions>
     </Filter>
+    <Filter Include="Kernal Files">
+      <UniqueIdentifier>{9f64638a-2047-4c5b-bca8-d8dc611dbf43}</UniqueIdentifier>
+      <Extensions>.cu</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -27,6 +31,9 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Kernal Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -50,5 +57,10 @@
     <Text Include="D:\Downloads\temp_lincolnshire_datasets\temp_lincolnshire_short.txt">
       <Filter>Data</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="max.cl">
+      <Filter>Kernal Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

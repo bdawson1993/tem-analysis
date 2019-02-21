@@ -99,7 +99,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
@@ -117,6 +117,7 @@
     <PostBuildEvent>
       <Command>xcopy temp_lincolnshire.txt $(OutputPath) /y
 xcopy temp_lincolnshire_short.txt $(OutputPath) /y
+xcopy max.cl  $(OutputPath) /y
 echo "Copied Data Files"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -162,6 +163,7 @@ echo "Copied Data Files"</Command>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Temperture.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OpenCl.cpp" />
@@ -186,6 +188,9 @@ echo "Copied Data Files"</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <DeploymentContent>true</DeploymentContent>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="max.cl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
