@@ -1,21 +1,32 @@
 #pragma once
-#ifdef __APPLE__
-#include <OpenCL/cl.hpp>
-#else
+
+#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+#define __CL_ENABLE_EXCEPTIONS
+
+
 #include <CL/cl.hpp>
-#endif
-
+#include <vector>
+#include <iostream>
 #include "Utils.h"
-
 
 
 class ComputeEngine
 {
 public:
-	ComputeEngine();
-	~ComputeEngine();
+	ComputeEngine()
+	{
 
-	void AddBuffer(int size);
+	};
+	~ComputeEngine()
+	{
+
+	};
+
+
+	void Init(string kernalName);
+	void AddBuffer(cl_mem_flags flag, int size);
+	void AddBuffer(cl_mem_flags flag, int size, vector<int> data);
+	void Execute(const char* funName, int size, int* output);
 
 private:
 	int platformID = 0;
@@ -25,4 +36,7 @@ private:
 	cl::Program program;
 	cl::Program::Sources sources;
 	vector<cl::Buffer> buffers;
+
+	
+
 };
