@@ -13,6 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{045e8b4c-721a-4fd3-8df2-42c38841950b}</UniqueIdentifier>
+      <Extensions>.txt</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -26,5 +30,16 @@
     <ClCompile Include="OpenCl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="D:\Downloads\temp_lincolnshire_datasets\readme.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="D:\Downloads\temp_lincolnshire_datasets\temp_lincolnshire.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="D:\Downloads\temp_lincolnshire_datasets\temp_lincolnshire_short.txt">
+      <Filter>Data</Filter>
+    </Text>
   </ItemGroup>
 </Project>

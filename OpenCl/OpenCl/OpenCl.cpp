@@ -3,6 +3,7 @@
 
 #include "pch.h"
 #include <iostream>
+#include <CL/opencl.h>
 
 int main()
 {
