@@ -4,6 +4,7 @@
 #include "pch.h"
 #include <iostream>
 #include <CL/opencl.h>
+#include "Temperture.h"
 
 int main()
 {

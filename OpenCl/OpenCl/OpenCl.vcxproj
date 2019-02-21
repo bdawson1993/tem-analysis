@@ -114,6 +114,11 @@
       <AdditionalDependencies>OpenCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(CUDA_PATH)/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy temp_lincolnshire.txt $(OutputPath)
+xcopy temp_lincolnshire_short.txt $(OutputPath)
+echo "Copied Data Files"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -155,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Temperture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OpenCl.cpp" />
@@ -164,6 +170,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Temperture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="D:\Downloads\temp_lincolnshire_datasets\readme.txt">
