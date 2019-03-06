@@ -44,4 +44,15 @@ kernel void Max(global int* data, global int* max)
 	}
 }
 
+kernel void Sum(global int* data, global int* avg)
+{
+
+}
+
+
+kernel void Sort(global int* data, global int* sortedData)
+{
+
+}
+
 
