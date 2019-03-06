@@ -8,7 +8,6 @@ STD = 5.92 <br />
 1QT = 5.30 <br />
 3QT = 14.00 <br />
 MED = 9.80 <br />
-TOT = 182214.4 <br/>
 <br /> 
 
 Filename: temp_lincolnshire_short.txt <br />
