@@ -19,21 +19,25 @@ int main(int argc, char **argv) {
 
 	cout << "Computing..." << endl;
 
-	ComputeEngine eng;
-	eng.Init("kernal.cl");
-	eng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int), temp.AirTemp());
-	eng.AddBuffer(CL_MEM_READ_WRITE, sizeof(int));
+	//min
+	ComputeEngine minEng;
+	minEng.Init("kernal.cl");
+	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp().size() * sizeof(int), temp.AirTemp());
+	minEng.AddBuffer(CL_MEM_READ_WRITE, sizeof(int));
+	
 
 
 	vector<int> min;
 	min.push_back(0);
-	eng.Execute("Min", temp.AirTemp().size() * sizeof(int), min);
+	minEng.Execute("Min", temp.AirTemp().size() * sizeof(int), min);
 	cout << "Min: " << min[0] << endl;
 
 	vector<int> max;
 	max.push_back(0);
-	eng.Execute("Max", temp.AirTemp().size() * sizeof(int), max);
-	cout << "Max: " << max[0] << end;
+	minEng.Execute("Max", temp.AirTemp().size() * sizeof(int), max);
+	cout << max[0] << endl;
+
+
 
 
 	system("pause");

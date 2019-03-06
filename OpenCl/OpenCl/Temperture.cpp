@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Temperture.h"
 
+
+
+
 void Temperture::ReadFile(string name)
 {
 	ifstream dataFile;
