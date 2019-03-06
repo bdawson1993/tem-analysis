@@ -26,7 +26,7 @@ public:
 	void Init(string kernalName);
 	void AddBuffer(cl_mem_flags flag, int size);
 	void AddBuffer(cl_mem_flags flag, int size, vector<int> data);
-	void Execute(const char* funName, int size, int& output);
+	void Execute(const char* funName, int size, vector<int>& output);
 
 private:
 	int platformID = 0;
