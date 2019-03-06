@@ -1,7 +1,7 @@
 # tem-analysis
 OpenCl assignment - Due On: 28/03/2019
 
-<strong> Expected Results </strong>
+<strong> Expected Results </strong> <br />
 Filename: temp_lincolnshire.txt <br />
 Total of 1873106 temperatures processed. <br />
 AVG = 9.77 <br />
