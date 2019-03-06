@@ -22,7 +22,7 @@ void ComputeEngine::Init(string kernalName)
 		std::cout << "Build Log:\t " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(context.getInfo<CL_CONTEXT_DEVICES>()[0]) << std::endl;
 		throw err;
 	}
-	cout << ListPlatformsDevices() << endl;
+	//cout << ListPlatformsDevices() << endl;
 }
 
 ///add buffer

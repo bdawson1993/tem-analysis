@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 	ComputeEngine eng;
 	eng.Init("max.cl");
 	eng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int), temp.AirTemp());
-	
+	eng.AddBuffer(CL_MEM_READ_WRITE, sizeof(int));
 
 	const char* name = "Max";
 	eng.Execute(name, temp.AirTemp().size() * sizeof(int), output);

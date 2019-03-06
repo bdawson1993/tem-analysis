@@ -1,25 +1,20 @@
-kernel  void Max(global int* A)
+kernel  void Max(global int* A, global int* B)
 {
-	int id = get_local_id(0);
-	int N = get_local_size(0);
+	int id = get_global_id(0);
+	int N = get_global_size(0);
 
+	B[id] = A[id];
 
-	for (int stride = 1; stride < N; stride *= 2)
-	{
-		if ((id % (stride * 2) == 0))
-			if (A[id] > A[id] + stride)
-			{
-				A[id] = A[id + stride];
-			}
-			else
-			{
-				A[id + stride] = A[id];
-			}
-			
+	barrier(CLK_GLOBAL_MEM_FENCE);
 
-			barrier(CLK_GLOBAL_MEM_FENCE);
-	}
+	for (int i = 1; i < N; i *= 2) { //i is a stride
+		if (!(id % (i * 2)) && ((id + i) < N))
+			B[id] += B[id + i];
 
+		barrier(CLK_GLOBAL_MEM_FENCE);
+	}
+
+	
 
 
 }
