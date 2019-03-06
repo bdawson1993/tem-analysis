@@ -25,7 +25,23 @@ kernel  void Min(global int* data, global int* min)
 
 kernel void Max(global int* data, global int* max)
 {
+	int id = get_global_id(0);
+	int N = get_global_size(0);
 
+	max[id] = data[id];
+
+	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init
+
+
+	for (int i = 1; i < N; i *= 2) { 
+		if (!(id % (i * 2)) && ((id + i) < N))
+			if (max[id] < max[id + i])
+			{
+				max[id] = max[id + i];
+			}
+
+		barrier(CLK_GLOBAL_MEM_FENCE);
+	}
 }
 
 
