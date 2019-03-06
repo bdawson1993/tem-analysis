@@ -117,7 +117,6 @@
     <PostBuildEvent>
       <Command>xcopy temp_lincolnshire.txt $(OutputPath) /y
 xcopy temp_lincolnshire_short.txt $(OutputPath) /y
-xcopy max.cl  $(OutputPath) /y
 echo "Copied Data Files"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -193,7 +192,7 @@ echo "Copied Data Files"</Command>
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="max.cl" />
+    <None Include="kernal.cl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,21 +15,26 @@ int main(int argc, char **argv) {
 	cout << "Loading Files..." << endl;
 	temp.ReadFile("temp_lincolnshire_short.txt");
 	
-	vector<int> output;
-	output.push_back(0);
+	
 
 	cout << "Computing..." << endl;
 
 	ComputeEngine eng;
-	eng.Init("max.cl");
+	eng.Init("kernal.cl");
 	eng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int), temp.AirTemp());
 	eng.AddBuffer(CL_MEM_READ_WRITE, sizeof(int));
 
-	const char* name = "Max";
-	eng.Execute(name, temp.AirTemp().size() * sizeof(int), output);
 
-	
-	cout << output[0] << endl;
+	vector<int> min;
+	min.push_back(0);
+	eng.Execute("Min", temp.AirTemp().size() * sizeof(int), min);
+	cout << "Min: " << min[0] << endl;
+
+	vector<int> max;
+	max.push_back(0);
+	eng.Execute("Max", temp.AirTemp().size() * sizeof(int), max);
+	cout << "Max: " << max[0] << end;
+
 
 	system("pause");
 

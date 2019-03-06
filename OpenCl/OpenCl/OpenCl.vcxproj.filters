@@ -68,7 +68,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="max.cl">
+    <None Include="kernal.cl">
       <Filter>Kernal Files</Filter>
     </None>
   </ItemGroup>
