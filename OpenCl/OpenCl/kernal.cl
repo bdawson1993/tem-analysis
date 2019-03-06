@@ -5,9 +5,10 @@ kernel  void Min(global int* data, global int* min)
 
 	min[id] = data[id];
 
-	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init
+	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init and copy
 
 
+	//calculate stride lengths so all data is calculted
 	for (int i = 1; i < N; i *= 2) { 
 		if (!(id % (i * 2)) && ((id + i) < N))
 			if (min[id] > min[id + i])
@@ -17,36 +18,27 @@ kernel  void Min(global int* data, global int* min)
 
 		barrier(CLK_GLOBAL_MEM_FENCE);
 	}
-
-	
-
-
 }
 
 kernel void Max(global int* data, global int* max)
 {
+	
+}
+
+kernel void Sum(global int* A, global int* B)
+{
 	int id = get_global_id(0);
 	int N = get_global_size(0);
 
-	max[id] = data[id];
+	B[id] = A[id];
 
-	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init
+	barrier(CLK_GLOBAL_MEM_FENCE);
 
-
-	for (int i = 1; i < N; i *= 2) { 
-		if (!(id % (i * 2)) && ((id + i) < N))
-			if (max[id] < max[id + i])
-			{
-				max[id] = max[id + i];
-			}
+	for (int i = 1; i < N; i *= 2) { //i is a stride
+			B[id] += B[id + i];
 
 		barrier(CLK_GLOBAL_MEM_FENCE);
 	}
-}
-
-kernel void Sum(global int* data, global int* avg)
-{
-
 }
 
 

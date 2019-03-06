@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iterator>
 
+
 using namespace std;
 
 class Temperture

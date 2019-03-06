@@ -1,19 +1,22 @@
-
+#pragma once
 
 #include <iostream>
 #include <vector>
 
 #include "ComputeEngine.h"
 #include "Temperture.h"
+#include "Timer.h"
 
-
+using namespace Timer;
 
 int main(int argc, char **argv) {
 	
 	Temperture temp;
 	
 	cout << "Loading Files..." << endl;
+	StartTimer();
 	temp.ReadFile("temp_lincolnshire_short.txt");
+	EndTimer("Loading Files");
 	
 	
 
@@ -22,8 +25,11 @@ int main(int argc, char **argv) {
 	//min
 	ComputeEngine minEng;
 	minEng.Init("kernal.cl");
+
+	StartTimer();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp().size() * sizeof(int), temp.AirTemp());
 	minEng.AddBuffer(CL_MEM_READ_WRITE, sizeof(int));
+	EndTimer("Memory Copying");
 	
 
 
@@ -34,7 +40,7 @@ int main(int argc, char **argv) {
 
 	vector<int> max;
 	max.push_back(0);
-	minEng.Execute("Max", temp.AirTemp().size() * sizeof(int), max);
+	minEng.Execute("Sum", temp.AirTemp().size() * sizeof(int), max);
 	cout << max[0] << endl;
 
 
