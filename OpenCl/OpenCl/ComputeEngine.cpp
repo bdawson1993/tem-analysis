@@ -9,7 +9,7 @@ void ComputeEngine::Init(string kernalName)
 {
 	context = GetContext(platformID, deviceID);
 	queue = cl::CommandQueue(context);
-	AddSources( sources,kernalName);
+	AddSources(sources,kernalName);
 	program = cl::Program(context, sources);
 
 	//build and debug the kernel code
@@ -54,13 +54,13 @@ void ComputeEngine::Execute(const char* funName, int size, vector<int>& output)
 {
 	try
 	{
-		cl::Kernel kernal = cl::Kernel(program, funName);
+		cl::Kernel* kernal = new cl::Kernel(program, funName);
 		for (int index = 0; index <= buffers.size() - 1; index++)
 		{
-			kernal.setArg(index, buffers[index]);
+			kernal->setArg(index, buffers[index]);
 		}
 
-		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(size), cl::NDRange());
+		queue.enqueueNDRangeKernel(*kernal, cl::NullRange, cl::NDRange(size), cl::NDRange());
 		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, sizeof(int), &output[0]);
 		
 	}
@@ -72,5 +72,10 @@ void ComputeEngine::Execute(const char* funName, int size, vector<int>& output)
 	
 
 
+}
+
+void ComputeEngine::Clean()
+{
+	//dispose of opencl resources
 }
 

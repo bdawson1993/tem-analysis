@@ -10,6 +10,8 @@
 #include "Utils.h"
 
 
+
+
 class ComputeEngine
 {
 public:
@@ -27,6 +29,7 @@ public:
 	void AddBuffer(cl_mem_flags flag, int size);
 	void AddBuffer(cl_mem_flags flag, int size, vector<int> data);
 	void Execute(const char* funName, int size, vector<int>& output);
+	void Clean();
 
 private:
 	int platformID = 0;
