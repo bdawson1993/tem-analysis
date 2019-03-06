@@ -1,6 +1,3 @@
-# tem-analysis
-OpenCl assignment - Due On: 28/03/2019
-
 <h2> Expected Results </h2> <br />
 Filename: temp_lincolnshire.txt <br />
 Total of 1873106 temperatures processed. <br />
