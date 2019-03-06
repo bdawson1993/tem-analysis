@@ -41,7 +41,9 @@ int main(int argc, char **argv) {
 	vector<int> max;
 	max.push_back(0);
 	minEng.Execute("Sum", temp.AirTemp().size() * sizeof(int), max);
-	cout << max[0] << endl;
+
+	float avg = max[0] / temp.AirTemp().size() - 1;
+	cout <<  "AVG: " << max[0] << endl;
 
 
 

@@ -35,7 +35,6 @@ kernel void Sum(global int* A, global int* B)
 	barrier(CLK_GLOBAL_MEM_FENCE);
 
 	for (int i = 1; i < N; i += 2) { //i is a stride
-		if (!(id % (i * 2)) && ((id + 1) < N))
 			B[id] += B[id + 1];
 		barrier(CLK_GLOBAL_MEM_FENCE);
 	}
