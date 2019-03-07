@@ -7,7 +7,19 @@
 #include "Temperture.h"
 #include "Timer.h"
 
+#include "Utils.h"
 using namespace Timer;
+
+
+int print_V(vector<int> values)
+{
+	cout << "{ ";
+	for (int index = 0; index < values.size() - 1; index++)
+	{
+		cout << values[index] << ", ";
+	}
+	cout << "}";
+}
 
 int main(int argc, char **argv) {
 	
@@ -18,19 +30,15 @@ int main(int argc, char **argv) {
 	temp.ReadFile("temp_lincolnshire_short.txt");
 	EndTimer("Loading Files");
 	
-	
-
 	cout << "Computing..." << endl;
 
 	//min
 	ComputeEngine minEng;
 	minEng.Init("kernal.cl");
 
-	vector<int> part;
-	part.push_back(0);
-
-	vector<int> min;
-	min.push_back(0);
+	//vector<int> data = { 10,10,10,10,10 };
+	vector<int> min(1,0);
+	cout << min.size();
 
 	StartTimer();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
@@ -38,13 +46,10 @@ int main(int argc, char **argv) {
 	EndTimer("Memory Copying");
 	
 
-	minEng.Execute("Min", min);
-	cout << "Min: " << min[0] << endl;
+	minEng.Execute("Max", min, true);
 
 	
-
-
-
+	cout << min[0] << endl;
 
 	system("pause");
 

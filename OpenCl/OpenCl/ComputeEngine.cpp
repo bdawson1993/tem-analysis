@@ -1,8 +1,5 @@
 #include "ComputeEngine.h"
 
-using namespace std;
-
-
 
 ///Init openCL
 void ComputeEngine::Init(string kernalName)
@@ -28,7 +25,6 @@ void ComputeEngine::Init(string kernalName)
 ///add buffer
 void ComputeEngine::AddBuffer(cl_mem_flags flag, size_t size)
 {
-	
 	buffers.push_back(cl::Buffer(context, flag, size));
 }
 
@@ -64,20 +60,27 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, vector<int> data)
 
 
 ///Execute the kernal code
-void ComputeEngine::Execute(const char* funName, vector<int>& output)
+void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLocal)
 {
-	//size_t nr_groups = input_elements / local_size;
-	//cout << nr_groups << endl;
+	size_t nr_groups = input_elements / local_size;
+	cout << nr_groups << endl;
 	try
 	{
-		cl::Kernel* kernal = new cl::Kernel(program, funName);
-		for (int index = 0; index <= buffers.size() - 1; index++)
+		cl::Kernel kernal =  cl::Kernel(program, funName);
+		int index = 0;
+		for (index = 0;index <= buffers.size() - 1; index++)
 		{
-			kernal->setArg(index, buffers[index]);
+			kernal.setArg(index, buffers[index]);
+		}
+		
+		if (useLocal)
+		{
+			kernal.setArg(index, cl::Local(local_size * sizeof(int)));
 		}
 
-		queue.enqueueNDRangeKernel(*kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size));
-		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, sizeof(int), &output[0]);
+		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size));
+		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, output.size()*sizeof(int), &output[0]);
+		
 		
 	}
 	catch (const cl::Error& err)

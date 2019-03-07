@@ -6,7 +6,7 @@
 
 namespace Timer
 {
-	using namespace std;
+	
 
 	clock_t timer;
 	void StartTimer();
@@ -20,7 +20,7 @@ namespace Timer
 	void EndTimer(string name)
 	{
 		timer = clock() - timer;
-		cout << "------- " <<  name << " took " << (int)timer / CLOCKS_PER_SEC << " seconds, " << (timer) / (CLOCKS_PER_SEC/1000) <<  " Miliseconds" << endl;
+		std::cout << "------- " <<  name << " took " << (int)timer / CLOCKS_PER_SEC << " seconds, " << (timer) / (CLOCKS_PER_SEC/1000) <<  " Miliseconds" << std::endl;
 
 	}
 

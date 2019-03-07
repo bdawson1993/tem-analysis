@@ -31,7 +31,7 @@ public:
 	void AddBuffer(cl_mem_flags flag, vector<int> data);
 	
 
-	void Execute(const char* funName, vector<int>& output);
+	void Execute(const char* funName, vector<int>& output, bool useLocal);
 	void Clean();
 
 private:

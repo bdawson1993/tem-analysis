@@ -4,13 +4,14 @@
 
 
 
+
 void Temperture::ReadFile(string name)
 {
 	ifstream dataFile;
-	dataFile.open(name, ifstream::in);
+	dataFile.open(name, std::ifstream::in);
 
 	//read file
-	string line;
+	std::string line;
 	while (getline(dataFile, line))
 	{
 		//split line using iterator

@@ -5,9 +5,8 @@
 #include <string>
 #include <sstream>
 #include <iterator>
+using namespace  std;
 
-
-using namespace std;
 
 class Temperture
 {
