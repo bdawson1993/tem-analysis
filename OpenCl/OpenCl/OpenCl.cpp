@@ -26,24 +26,26 @@ int main(int argc, char **argv) {
 	ComputeEngine minEng;
 	minEng.Init("kernal.cl");
 
+	vector<int> part;
+	part.push_back(0);
+
+	vector<int> min;
+	min.push_back(0);
+
 	StartTimer();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp().size() * sizeof(int), temp.AirTemp());
-	minEng.AddBuffer(CL_MEM_READ_WRITE, sizeof(int));
+	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
+	
+	
 	EndTimer("Memory Copying");
 	
 
 
-	vector<int> min;
-	min.push_back(0);
+	
 	minEng.Execute("Min", temp.AirTemp().size() * sizeof(int), min);
 	cout << "Min: " << min[0] << endl;
 
-	vector<int> max;
-	max.push_back(0);
-	minEng.Execute("Sum", temp.AirTemp().size() * sizeof(int), max);
-
-	float avg = max[0] / temp.AirTemp().size() - 1;
-	cout <<  "AVG: " << max[0] << endl;
+	
 
 
 

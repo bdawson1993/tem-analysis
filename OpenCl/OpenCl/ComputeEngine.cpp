@@ -57,6 +57,7 @@ void ComputeEngine::Execute(const char* funName, int size, vector<int>& output)
 		cl::Kernel* kernal = new cl::Kernel(program, funName);
 		for (int index = 0; index <= buffers.size() - 1; index++)
 		{
+			cout << index << endl;
 			kernal->setArg(index, buffers[index]);
 		}
 
