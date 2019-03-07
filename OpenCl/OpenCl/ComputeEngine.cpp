@@ -33,23 +33,26 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, size_t size)
 }
 
 ///Add buffer and write
-void ComputeEngine::AddBuffer(cl_mem_flags flag, size_t size, vector<int> data)
+void ComputeEngine::AddBuffer(cl_mem_flags flag, vector<int> data)
 {
-	input_elements = data.size();
+	//pad array to fit to local size
 	padding_size = data.size() % local_size;
 	if (padding_size) {
-		//create an extra vector with neutral values
 		std::vector<int> A_ext(local_size - padding_size, 0);
-		//append that extra vector to our input
 		data.insert(data.end(), A_ext.begin(), A_ext.end());
 	}
 
+	//data stats
+	input_elements = data.size();
+	input_size = data.size()*sizeof(int);
+
+	//create buffer
 	try
 	{
-		cl::Buffer buffer(context, flag, size);
+		cl::Buffer buffer(context, flag, input_size);
 		buffers.push_back(buffer);
 
-		queue.enqueueWriteBuffer(buffer, CL_TRUE, 0, size, &data[0]);
+		queue.enqueueWriteBuffer(buffer, CL_TRUE, 0, input_size, &data[0]);
 	}
 	catch (const cl::Error& err)
 	{
@@ -61,7 +64,7 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, size_t size, vector<int> data)
 
 
 ///Execute the kernal code
-void ComputeEngine::Execute(const char* funName, int size, vector<int>& output)
+void ComputeEngine::Execute(const char* funName, vector<int>& output)
 {
 	//size_t nr_groups = input_elements / local_size;
 	//cout << nr_groups << endl;
@@ -73,7 +76,7 @@ void ComputeEngine::Execute(const char* funName, int size, vector<int>& output)
 			kernal->setArg(index, buffers[index]);
 		}
 
-		queue.enqueueNDRangeKernel(*kernal, cl::NullRange, cl::NDRange(size), cl::NDRange(local_size));
+		queue.enqueueNDRangeKernel(*kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size));
 		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, sizeof(int), &output[0]);
 		
 	}

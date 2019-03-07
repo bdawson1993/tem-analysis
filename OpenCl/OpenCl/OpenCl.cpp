@@ -33,16 +33,12 @@ int main(int argc, char **argv) {
 	min.push_back(0);
 
 	StartTimer();
-	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp().size() * sizeof(int), temp.AirTemp());
+	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
 	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
-	
-	
 	EndTimer("Memory Copying");
 	
 
-
-	
-	minEng.Execute("Min", temp.AirTemp().size() * sizeof(int), min);
+	minEng.Execute("Min", min);
 	cout << "Min: " << min[0] << endl;
 
 	
