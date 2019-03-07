@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	
 	cout << "Loading Files..." << endl;
 	StartTimer();
-	temp.ReadFile("temp_lincolnshire_short.txt");
+	temp.ReadFile("temp_lincolnshire.txt");
 	EndTimer("Loading Files");
 	
 	cout << "Computing..." << endl;
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 	minEng.Execute("Max", min, true);
 
 	
-	cout << min[0] << endl;
+	cout << min[0] / temp.AirTemp() << endl;
 
 	system("pause");
 
