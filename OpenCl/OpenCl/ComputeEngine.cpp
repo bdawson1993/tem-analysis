@@ -26,14 +26,24 @@ void ComputeEngine::Init(string kernalName)
 }
 
 ///add buffer
-void ComputeEngine::AddBuffer(cl_mem_flags flag, int size)
+void ComputeEngine::AddBuffer(cl_mem_flags flag, size_t size)
 {
+	
 	buffers.push_back(cl::Buffer(context, flag, size));
 }
 
 ///Add buffer and write
-void ComputeEngine::AddBuffer(cl_mem_flags flag, int size, vector<int> data)
+void ComputeEngine::AddBuffer(cl_mem_flags flag, size_t size, vector<int> data)
 {
+	input_elements = data.size();
+	padding_size = data.size() % local_size;
+	if (padding_size) {
+		//create an extra vector with neutral values
+		std::vector<int> A_ext(local_size - padding_size, 0);
+		//append that extra vector to our input
+		data.insert(data.end(), A_ext.begin(), A_ext.end());
+	}
+
 	try
 	{
 		cl::Buffer buffer(context, flag, size);
@@ -49,19 +59,21 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, int size, vector<int> data)
 	
 }
 
+
 ///Execute the kernal code
 void ComputeEngine::Execute(const char* funName, int size, vector<int>& output)
 {
+	//size_t nr_groups = input_elements / local_size;
+	//cout << nr_groups << endl;
 	try
 	{
 		cl::Kernel* kernal = new cl::Kernel(program, funName);
 		for (int index = 0; index <= buffers.size() - 1; index++)
 		{
-			cout << index << endl;
 			kernal->setArg(index, buffers[index]);
 		}
 
-		queue.enqueueNDRangeKernel(*kernal, cl::NullRange, cl::NDRange(size), cl::NDRange());
+		queue.enqueueNDRangeKernel(*kernal, cl::NullRange, cl::NDRange(size), cl::NDRange(local_size));
 		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, sizeof(int), &output[0]);
 		
 	}

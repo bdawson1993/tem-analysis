@@ -1,7 +1,8 @@
-kernel  void Min(global int* data, global int* min)
+kernel  void Min(global const int* data, global int* min)
 {
 	int id = get_global_id(0);
 	int N = get_global_size(0);
+	
 
 	min[id] = data[id];
 
