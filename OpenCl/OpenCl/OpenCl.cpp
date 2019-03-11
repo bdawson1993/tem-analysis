@@ -11,7 +11,7 @@
 using namespace Timer;
 
 
-int print_V(vector<int> values)
+void print_V(vector<int> values)
 {
 	cout << "{ ";
 	for (int index = 0; index < values.size() - 1; index++)
