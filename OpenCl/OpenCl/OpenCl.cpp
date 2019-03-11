@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 	
 	cout << "Loading Files..." << endl;
 	StartTimer();
-	temp.ReadFile("temp_lincolnshire.txt");
+	temp.ReadFile("temp_lincolnshire_short.txt");
 	EndTimer("Loading Files");
 	
 	cout << "Computing..." << endl;
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 	minEng.Init("kernal.cl");
 
 	//vector<int> data = { 10,10,10,10,10 };
-	vector<int> min(1,0);
+	vector<int> min(temp.AirTemp().size(),0);
 	cout << min.size();
 
 	StartTimer();
@@ -46,10 +46,10 @@ int main(int argc, char **argv) {
 	EndTimer("Memory Copying");
 	
 
-	minEng.Execute("Max", min, true);
+	minEng.Execute("Sort", min, false);
 
 	
-	cout << min[0] / temp.AirTemp() << endl;
+	print_V(min);
 
 	system("pause");
 

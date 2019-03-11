@@ -31,7 +31,7 @@ public:
 	void AddBuffer(cl_mem_flags flag, vector<int> data);
 	
 
-	void Execute(const char* funName, vector<int>& output, bool useLocal);
+	void Execute(const char* funName, vector<int>& output, bool useLocal, int localCount = 1);
 	void Clean();
 
 private:
@@ -44,7 +44,7 @@ private:
 	vector<cl::Buffer> buffers;
 
 	size_t input_size = 0;
-	size_t local_size = 50; //12;
+	size_t local_size = 512; //12;
 	size_t padding_size = 0;
 	size_t input_elements = 0;
 

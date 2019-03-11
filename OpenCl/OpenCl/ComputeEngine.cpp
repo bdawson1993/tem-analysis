@@ -60,10 +60,10 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, vector<int> data)
 
 
 ///Execute the kernal code
-void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLocal)
+void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLocal, int localCount)
 {
 	size_t nr_groups = input_elements / local_size;
-	cout << nr_groups << endl;
+	//cout << nr_groups << endl;
 	try
 	{
 		cl::Kernel kernal =  cl::Kernel(program, funName);
@@ -73,9 +73,13 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 			kernal.setArg(index, buffers[index]);
 		}
 		
+		
 		if (useLocal)
 		{
-			kernal.setArg(index, cl::Local(local_size * sizeof(int)));
+			for(index; index <= localCount+1;index++)
+			{
+				kernal.setArg(index, cl::Local(local_size * sizeof(int)));
+			}
 		}
 
 		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size));

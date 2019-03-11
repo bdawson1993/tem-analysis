@@ -3,7 +3,7 @@ kernel  void Min(global const int* data, global int* min)
 	//Reduction on local
 	int id = get_global_id(0);
 	int N = get_global_size(0);
-	
+
 
 	min[id] = data[id];
 
@@ -11,7 +11,7 @@ kernel  void Min(global const int* data, global int* min)
 
 
 	//calculate stride lengths so all data is calculted
-	for (int i = 0; i < N; i += 2) { 
+	for (int i = 0; i < N; i += 2) {
 		if (!(id % (i * 2)) && ((id + i) < N))
 			if (min[id] > min[id + i])
 			{
@@ -43,21 +43,56 @@ kernel void Max(global const int* A, global int* B, local int* scratch) {
 	//we add results from all local groups to the first element of the array
 	//serial operation! but works for any group size
 	//copy the cache to output array
-	if (!lid) {
-		atomic_add(&B[0], scratch[lid]);
+	if (!lid)
+	{
+		B[0] += scratch[lid];
 	}
-	
+
+
+
+	//if (!lid) {
+	//	atomic_add(&B[0], scratch[lid]);
+	//}
+
 }
 
 kernel void Sum(global int* data, global int* sum)
 {
-	
+
 }
 
 
 kernel void Sort(global int* data, global int* sortedData)
 {
+	int id = get_global_id(0);
+	int size = get_global_size(0);
+	sortedData[id] = data[id];
+	barrier(CLK_GLOBAL_MEM_FENCE);
 
+	for (int i = 0; i < size - 1; i++)
+	{
+		if ((id + i % 2) == 0)
+		{
+			if (id > size)
+			{
+				int temp = sortedData[id];
+				sortedData[id] = sortedData[id + 1];
+				sortedData[id + 1] = temp;
+			}
+		else
+		{
+				if (id > size - 1)
+				{
+					int temp = sortedData[id + 1];
+					sortedData[id + 1] = sortedData[id];
+					sortedData[id] = temp;
+				}
+		}
+		}
+	}
+
+	barrier(CLK_GLOBAL_MEM_FENCE);
+	
 }
 
 
