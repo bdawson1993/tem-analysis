@@ -61,38 +61,42 @@ kernel void Sum(global int* data, global int* sum)
 
 }
 
-
+#define intswap(A,B) {int temp=A;A=B;B=temp;}
 kernel void Sort(global int* data, global int* sortedData)
 {
+
 	int id = get_global_id(0);
 	int size = get_global_size(0);
-	sortedData[id] = data[id];
+	int NID = 0;
+
 	barrier(CLK_GLOBAL_MEM_FENCE);
 
-	for (int i = 0; i < size - 1; i++)
+	for (int i = 1; i <= size; i++)
 	{
-		if ((id + i % 2) == 0)
+		if (((id % 2) != 0) && ((i % 2) != 0))
 		{
-			if (id > size)
+			//comp exchange min
+			if (data[id] > data[id + 1]) //min
 			{
-				int temp = sortedData[id];
-				sortedData[id] = sortedData[id + 1];
-				sortedData[id + 1] = temp;
+				intswap(data[id], data[id + 1])
 			}
-		else
-		{
-				if (id > size - 1)
-				{
-					int temp = sortedData[id + 1];
-					sortedData[id + 1] = sortedData[id];
-					sortedData[id] = temp;
-				}
 		}
+		
+
+
+		if (((id % 2) == 0) && ((i % 2) == 0))
+		{
+			//comp exchange min
+			if (data[id] > data[id + 1]) //min
+			{
+				intswap(data[id], data[id + 1])
+			}
 		}
 	}
 
-	barrier(CLK_GLOBAL_MEM_FENCE);
-	
+
+	sortedData[id] = data[id];
+
 }
 
 

@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 
 	//vector<int> data = { 10,10,10,10,10 };
 	vector<int> min(temp.AirTemp().size(),0);
-	cout << min.size();
+	
 
 	StartTimer();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
@@ -48,7 +48,6 @@ int main(int argc, char **argv) {
 
 	minEng.Execute("Sort", min, false);
 
-	
 	print_V(min);
 
 	system("pause");
