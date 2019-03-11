@@ -62,40 +62,36 @@ kernel void Sum(global int* data, global int* sum)
 }
 
 #define intswap(A,B) {int temp=A;A=B;B=temp;}
-kernel void Sort(global int* data, global int* sortedData)
+kernel void Sort(global int* x, global int* sortedData)
 {
-
 	int id = get_global_id(0);
-	int size = get_global_size(0);
-	int NID = 0;
+	int n = get_global_size(0);
+	int I = 0;
 
-	barrier(CLK_GLOBAL_MEM_FENCE);
 
-	for (int i = 1; i <= size; i++)
+	for (int i = 1; i < n; i++)
 	{
-		if (((id % 2) != 0) && ((i % 2) != 0))
-		{
-			//comp exchange min
-			if (data[id] > data[id + 1]) //min
-			{
-				intswap(data[id], data[id + 1])
+		I = i % 2;
+		if (I == 0 && ((id * 2 + 1) < n)) {
+			if (x[id * 2] > x[id * 2 + 1]) {
+				int X = x[id * 2];
+				x[id * 2] = x[id * 2 + 1];
+				x[id * 2 + 1] = X;
 			}
 		}
-		
-
-
-		if (((id % 2) == 0) && ((i % 2) == 0))
-		{
-			//comp exchange min
-			if (data[id] > data[id + 1]) //min
-			{
-				intswap(data[id], data[id + 1])
+		barrier(CLK_GLOBAL_MEM_FENCE);
+		if (I == 1 && ((id * 2 + 2) < n)) {
+			if (x[id * 2 + 1] > x[id * 2 + 2]) {
+				int X = x[id * 2 + 1];
+				x[id * 2 + 1] = x[id * 2 + 2];
+				x[id * 2 + 2] = X;
 			}
 		}
 	}
+	
 
 
-	sortedData[id] = data[id];
+	sortedData[id] = x[id];
 
 }
 
