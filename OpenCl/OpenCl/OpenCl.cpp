@@ -42,11 +42,11 @@ int main(int argc, char **argv) {
 
 	StartTimer();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
-	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
+	//minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
 	EndTimer("Memory Copying");
 	
 
-	minEng.Execute("Sort", min, false);
+	minEng.Execute("Sort", min, true, 2);
 
 	print_V(min);
 
