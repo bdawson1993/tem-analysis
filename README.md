@@ -14,7 +14,7 @@ Filename: temp_lincolnshire_short.txt <br />
 Total of 18732 temperatures processed. <br />
 AVG = 9.73 &#10004; <br />
 MIN = -25.00 &#10004; <br />
-MAX = 31.50 <br />
+MAX = 31.50 &#10004; <br />
 STD = 5.91 <br />
 1QT = 5.10 <br />
 3QT = 14.00 <br />
