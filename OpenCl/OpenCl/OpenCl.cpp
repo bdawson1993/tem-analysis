@@ -51,16 +51,20 @@ int main(int argc, char **argv) {
 	//sort(sorted.begin(), sorted.end());
 
 	//compute sum
-	minEng.Execute("Sum", min, true);
-	cout << "Temperature AVG: " << min[0] / temp.AirTemp().size() << endl;
+	//minEng.Execute("Sum", min, true);
+	//cout << "Temperature AVG: " << min[0] / temp.AirTemp().size() << endl;
 
 	//compute min
-	minEng.Execute("Min", min, false);
-	cout << "Min : " << min[0] << endl;
+	//minEng.Execute("Min", min, false);
+	//cout << "Min : " << min[0] << endl;
 
 	//compute max
-	minEng.Execute("Max", min, false);
-	cout << "Max : " << min[0] << endl;
+	//minEng.Execute("Max", min, false);
+	//cout << "Max : " << min[0] << endl;
+
+	//sort
+	minEng.Execute("Sort", min, false);
+	print_V(min);
 
 	system("pause");
 

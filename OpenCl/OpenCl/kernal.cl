@@ -1,5 +1,6 @@
 
 
+//works on small data set
 kernel  void Min(global const int* data, global int* min)
 {
 	//Reduction on local
@@ -21,12 +22,13 @@ kernel  void Min(global const int* data, global int* min)
 	}
 }
 
+//works on small data set
 kernel  void Max(global const int* data, global int* min)
 {
 	//Reduction on local
 	int id = get_global_id(0);
 	int N = get_global_size(0);
-	min[id] = data[id];
+	
 
 	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init and copy
 
@@ -41,6 +43,18 @@ kernel  void Max(global const int* data, global int* min)
 		barrier(CLK_GLOBAL_MEM_FENCE);
 	}
 }
+
+kernel void MinL(global const int* data, global int* min, local int* scratch)
+{
+
+}
+
+kernel void MaxL(global const int* data, global int* min, local int* scratch)
+{
+
+}
+
+
 
 //reduce using local memory (so called privatisation)
 kernel void Sum(global const int* A, global int* B, local int* scratch) {
@@ -90,11 +104,16 @@ kernel void Sort(global int * data, global int * sortedData)
 			{
 				intswap(sortedData[id], sortedData[id + i]);
 			}
+			else
+			{
+				intswap(sortedData[id + 1], sortedData[id - 1]);
+			}
 		}
 		barrier(CLK_GLOBAL_MEM_FENCE);
 
 	}
 
+	//even pass
 	for (int i = 1; i < size - 1; i++)
 	{
 		if (((i % 2) == 0) && ((id % 2) == 0))
@@ -102,6 +121,10 @@ kernel void Sort(global int * data, global int * sortedData)
 			if (sortedData[id] > sortedData[id + 1])
 			{
 				intswap(sortedData[id], sortedData[id + i]);
+			}
+			else
+			{
+				intswap(sortedData[id + 1], sortedData[id - 1]);
 			}
 		}
 		barrier(CLK_GLOBAL_MEM_FENCE);
