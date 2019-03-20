@@ -100,6 +100,6 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 
 void ComputeEngine::Clean()
 {
-	//dispose of opencl resources
+	buffers.clear();
 }
 

@@ -62,9 +62,22 @@ int main(int argc, char **argv) {
 	//minEng.Execute("Max", min, false);
 	//cout << "Max : " << min[0] << endl;
 
-	//sort
-	minEng.Execute("Sort", min, false);
-	print_V(min);
+	//min
+	minEng.Execute("Min", min, false);
+	cout << "Min: " << min[0] << endl;
+
+	//max
+	minEng.Execute("Max", min, false);
+	cout << "Max: " << min[0] << endl;
+
+	//avg
+	minEng.Execute("Sum", min, true);
+	cout << "Mean: " << min[0] / temp.AirTemp().size() << endl;
+
+
+
+
+	
 
 	system("pause");
 

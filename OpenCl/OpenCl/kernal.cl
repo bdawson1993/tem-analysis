@@ -18,7 +18,7 @@ kernel  void Min(global const int* data, global int* min)
 				min[id] = min[id + i];
 			}
 
-		barrier(CLK_GLOBAL_MEM_FENCE);
+		barrier(CLK_GLOBAL_MEM_FENCE); 
 	}
 }
 
@@ -43,17 +43,6 @@ kernel  void Max(global const int* data, global int* min)
 		barrier(CLK_GLOBAL_MEM_FENCE);
 	}
 }
-
-kernel void MinL(global const int* data, global int* min, local int* scratch)
-{
-
-}
-
-kernel void MaxL(global const int* data, global int* min, local int* scratch)
-{
-
-}
-
 
 
 //reduce using local memory (so called privatisation)
@@ -85,10 +74,7 @@ kernel void Sum(global const int* A, global int* B, local int* scratch) {
 
 //sort functions
 #define intswap(A,B) {int temp=A;A=B;B=temp;}
-
-
-
-kernel void Sort(global int * data, global int * sortedData)
+kernel void OddEvenSort(global int * data, global int * sortedData)
 {
 	int id = get_global_id(0);
 	int size = get_global_size(0);
@@ -128,6 +114,30 @@ kernel void Sort(global int * data, global int * sortedData)
 			}
 		}
 		barrier(CLK_GLOBAL_MEM_FENCE);
+	}
+}
+
+kernel void BubbleSort(global int* data, global int * sortedData)
+{
+	int id = get_global_id(0);
+	int N = get_global_size(0);
+	sortedData[id] = data[id];
+	barrier(CLK_GLOBAL_MEM_FENCE);
+
+	for (int i = 0; i < N; i += 2)
+	{
+		for (int j = 1; i < N - i; j++)
+		{
+			if (sortedData[j] > sortedData[j + 1])
+			{
+				intswap(sortedData[j], sortedData[j + 1]);
+			}
+			else
+			{
+				intswap(sortedData[j + 1], sortedData[j]);
+			}
+			barrier(CLK_GLOBAL_MEM_FENCE);
+		}
 	}
 }
 
