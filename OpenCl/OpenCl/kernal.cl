@@ -3,12 +3,11 @@
 //works on small data set
 kernel  void Min(global const int* data, global int* min)
 {
-	//Reduction on local
 	int id = get_global_id(0);
 	int N = get_global_size(0);
 	min[id] = data[id];
 
-	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init and copy
+	barrier(CLK_GLOBAL_MEM_FENCE);
 
 
 	for (int i = 0; i < N; i += 2) {
@@ -25,12 +24,12 @@ kernel  void Min(global const int* data, global int* min)
 //works on small data set
 kernel  void Max(global const int* data, global int* min)
 {
-	//Reduction on local
+	
 	int id = get_global_id(0);
 	int N = get_global_size(0);
 	
 
-	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init and copy
+	barrier(CLK_GLOBAL_MEM_FENCE);
 
 
 	for (int i = 0; i < N; i += 2) {
@@ -45,7 +44,6 @@ kernel  void Max(global const int* data, global int* min)
 }
 
 
-//reduce using local memory (so called privatisation)
 kernel void Sum(global const int* A, global int* B, local int* scratch) {
 	int id = get_global_id(0);
 	int lid = get_local_id(0);

@@ -73,7 +73,7 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 			kernal.setArg(index, buffers[index]);
 		}
 		
-		
+		//build local buffers
 		if (useLocal)
 		{
 			for(index; index <= localCount+1;index++)
@@ -82,6 +82,7 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 			}
 		}
 
+		//execute kernal
 		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size));
 		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, output.size()*sizeof(int), &output[0]);
 		
@@ -98,6 +99,7 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 
 }
 
+///Clear buffer vector
 void ComputeEngine::Clean()
 {
 	buffers.clear();
