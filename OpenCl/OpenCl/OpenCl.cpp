@@ -63,9 +63,9 @@ int main(int argc, char **argv) {
 	//cout << "Max : " << min[0] << endl;
 
 	//sort
-	minEng.Execute("Sort", min, false);
-	print_V(min);
-
+	minEng.Execute("MaxL", min, true);
+	cout << min[0] << endl;
+	//print_V(min);
 	system("pause");
 
 	return 0;

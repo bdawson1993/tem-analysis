@@ -46,17 +46,65 @@ kernel  void Max(global const int* data, global int* min)
 
 kernel void MinL(global const int* data, global int* min, local int* scratch)
 {
+	//Reduction on local
+	int id = get_global_id(0);
+	int N = get_local_size(0);
+	int lid = get_local_id(0);
 
+	scratch[lid] = data[id];
+	barrier(CLK_LOCAL_MEM_FENCE); //wait for all threads to init and copy
+
+
+	for (int i = 1; i < N; i *= 2) {
+		if (!(lid % (i * 2)) && ((lid + i) < N))
+		{
+			if (scratch[lid] > scratch[lid + i])
+			{
+				scratch[lid] = scratch[lid + i];
+			}
+		}
+
+		barrier(CLK_LOCAL_MEM_FENCE);
+	}
+	
+
+	if (!lid)
+	{
+		atomic_min(&min[0], scratch[lid]);
+	}
 }
 
 kernel void MaxL(global const int* data, global int* min, local int* scratch)
 {
+	//Reduction on local
+	int id = get_global_id(0);
+	int N = get_local_size(0);
+	int lid = get_local_id(0);
 
+	scratch[lid] = data[id];
+	barrier(CLK_LOCAL_MEM_FENCE); //wait for all threads to init and copy
+
+
+	for (int i = 1; i < N; i *= 2) {
+		if (!(lid % (i * 2)) && ((lid + i) < N))
+		{
+			if (scratch[lid] < scratch[lid + i])
+			{
+				scratch[lid] = scratch[lid + i];
+			}
+		}
+
+		barrier(CLK_LOCAL_MEM_FENCE);
+	}
+
+
+	if (!lid)
+	{
+		atomic_max(&min[0], scratch[lid]);
+	}
 }
 
 
-
-//reduce using local memory (so called privatisation)
 kernel void Sum(global const int* A, global int* B, local int* scratch) {
 	int id = get_global_id(0);
 	int lid = get_local_id(0);
@@ -85,10 +133,7 @@ kernel void Sum(global const int* A, global int* B, local int* scratch) {
 
 //sort functions
 #define intswap(A,B) {int temp=A;A=B;B=temp;}
-
-
-
-kernel void Sort(global int * data, global int * sortedData)
+kernel void OddEvenSort(global int * data, global int * sortedData)
 {
 	int id = get_global_id(0);
 	int size = get_global_size(0);
