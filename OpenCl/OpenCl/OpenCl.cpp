@@ -37,6 +37,11 @@ int main(int argc, char **argv) {
 	cout << "Min : " << Min() << endl;
 	cout << "Mean: " << Sum() / temp.AirTemp().size() << endl;
 
+	//serial functions
+	
+	
+
+
 	system("pause");
 
 	return 0;
@@ -54,36 +59,43 @@ void print_V(vector<int> values)
 
 int Max()
 {
+	StartTimer();
 	vector<int> value(temp.AirTemp().size(),0);
 
 	minEng.Clean();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
 	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
 	minEng.Execute("MaxL", value, true);
+	EndTimer("Max ");
 
 	return value[0];
 }
 
 int Min()
 {
+	StartTimer();
 	vector<int> value(temp.AirTemp().size(), 0);
 
 	minEng.Clean();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
 	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
 	minEng.Execute("MinL", value, true);
+	EndTimer("Min ");
 
 	return value[0];
 }
 
 int Sum()
 {
+	StartTimer();
 	vector<int> value(temp.AirTemp().size(), 0);
 
 	minEng.Clean();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
 	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
 	minEng.Execute("Sum", value, true);
+	EndTimer("Sum ");
+
 
 	return value[0];
 }
