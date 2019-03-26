@@ -44,6 +44,7 @@ kernel  void Max(global const int* data, global int* min)
 	}
 }
 
+//Min for Large Dataset
 kernel void MinL(global const int* data, global int* min, local int* scratch)
 {
 	//Reduction on local
@@ -74,15 +75,15 @@ kernel void MinL(global const int* data, global int* min, local int* scratch)
 	}
 }
 
+//Max for Large Dataset
 kernel void MaxL(global const int* data, global int* min, local int* scratch)
 {
-	//Reduction on local
 	int id = get_global_id(0);
 	int N = get_local_size(0);
 	int lid = get_local_id(0);
 
 	scratch[lid] = data[id];
-	barrier(CLK_LOCAL_MEM_FENCE); //wait for all threads to init and copy
+	barrier(CLK_LOCAL_MEM_FENCE); 
 
 
 	for (int i = 1; i < N; i *= 2) {
@@ -109,10 +110,10 @@ kernel void Sum(global const int* A, global int* B, local int* scratch) {
 	int lid = get_local_id(0);
 	int N = get_local_size(0);
 
-	//cache all N values from global memory to local memory
+	
 	scratch[lid] = A[id];
 
-	barrier(CLK_LOCAL_MEM_FENCE);//wait for all local threads to finish copying from global to local memory
+	barrier(CLK_LOCAL_MEM_FENCE);
 
 	for (int i = 1; i < N; i *= 2) {
 		if (!(lid % (i * 2)) && ((lid + i) < N))
@@ -132,11 +133,11 @@ kernel void Sum(global const int* A, global int* B, local int* scratch) {
 kernel void SubtractAndSq(global const int* data, global const int* value, global int* output)
 {
 	int id = get_global_id(0);
+	output[id] = data[id]; //copy all values
+	barrier(CLK_GLOBAL_MEM_FENCE); //sync threads
 
-	//cache all N values from global memory to local memory
-	output[id] = data[id];
-	barrier(CLK_GLOBAL_MEM_FENCE);
-	output[id] -= value[0] ^ 2;
+
+	output[id] -= value[0] ^ 2; //minus and sq
 	
 }
 
