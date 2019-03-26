@@ -169,6 +169,7 @@ kernel void OddEvenSort(global int * data, global int * sortedData)
 
 	}
 
+	//barrier(CLK_GLOBAL_MEM_FENCE);
 	//even pass
 	for (int i = 1; i < size - 1; i++)
 	{

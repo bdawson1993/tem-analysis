@@ -16,6 +16,7 @@ int Max();
 int Min();
 int Sum();
 int Sum(vector<int> values);
+vector<int> Sort();
 vector<int> SubtractAndSqaure(int mean);
 
 ComputeEngine minEng;
@@ -34,20 +35,37 @@ int main(int argc, char **argv) {
 	cout << "Computing..." << endl;
 	minEng.Init("kernal.cl");
 
-	
+	//output results
+	//max
+	StartTimer();
+	cout << "Max : " << Max() << endl;
+	EndTimer("Max");
+
+	//min
+	StartTimer();
+	cout << "Min : " << Min() << endl;
+	EndTimer("Min");
+
+	//Mean
+	StartTimer();
+	cout << "Mean: " << Sum() / temp.AirTemp().size() << endl;
+	EndTimer("Mean");
+
 
 	//STD
 	StartTimer();
 	int avg = Sum() / temp.AirTemp().size();
 	vector<int>subtractedVector = SubtractAndSqaure(avg);
 	int sigma = Sum(subtractedVector);
+	cout << "Standard Divation: " << float(sigma / temp.AirTemp().size()) << endl;
 	EndTimer("Standard Divation");
 
-	//output results
-	cout << "Max : " << Max() << endl;
-	cout << "Min : " << Min() << endl;
-	cout << "Mean: " << Sum() / temp.AirTemp().size() << endl;
-	cout << "Standard Divation: " << float(sigma / temp.AirTemp().size()) << endl;
+
+	StartTimer();
+	vector<int> sortedData = Sort();
+	EndTimer("Sort");
+
+	print_V(sortedData);
 
 	//serial functions
 	
@@ -116,6 +134,20 @@ int Sum(vector<int> values)
 	minEng.Execute("Sum", value, true);
 	
 	return value[0];
+
+}
+
+vector<int> Sort()
+{
+	vector<int> values(temp.AirTemp().size(), 0);
+
+	minEng.Clean();
+
+	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
+	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
+	minEng.Execute("OddEvenSort", values);
+
+	return values;
 
 }
 
