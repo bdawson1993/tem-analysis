@@ -62,9 +62,29 @@ int main(int argc, char **argv) {
 	//minEng.Execute("Max", min, false);
 	//cout << "Max : " << min[0] << endl;
 
-	//sort
-	minEng.Execute("MaxL", min, true);
-	cout << min[0] << endl;
+	//sum
+	minEng.Execute("Sum", min, true);
+	min[0] = min[0] / min.size();
+
+	//subtract mean
+	minEng.Clean();
+	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
+	minEng.AddBuffer(CL_MEM_READ_ONLY, min[0]);
+	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
+	minEng.Execute("SubtractAndSq", min, false);
+	minEng.Clean();
+
+	//sum of the mean
+	minEng.AddBuffer(CL_MEM_READ_ONLY, min);
+	minEng.AddBuffer(CL_MEM_READ_WRITE, min.size() * sizeof(int));
+	minEng.Execute("Sum", min, true);
+
+	cout << min[0] / min.size() << endl;
+
+
+
+	//print_V(min);
+
 	//print_V(min);
 	system("pause");
 

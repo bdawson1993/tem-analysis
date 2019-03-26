@@ -104,7 +104,6 @@ kernel void MaxL(global const int* data, global int* min, local int* scratch)
 	}
 }
 
-
 kernel void Sum(global const int* A, global int* B, local int* scratch) {
 	int id = get_global_id(0);
 	int lid = get_local_id(0);
@@ -128,6 +127,17 @@ kernel void Sum(global const int* A, global int* B, local int* scratch) {
 		atomic_add(&B[0], scratch[lid]);
 	}
 
+}
+
+kernel void SubtractAndSq(global const int* data, global const int* value, global int* output)
+{
+	int id = get_global_id(0);
+
+	//cache all N values from global memory to local memory
+	output[id] = data[id];
+	barrier(CLK_GLOBAL_MEM_FENCE);
+	output[id] -= value[0] ^ 2;
+	
 }
 
 
