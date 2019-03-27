@@ -40,8 +40,13 @@ int main(int argc, char **argv) {
 	temp.ReadFile(file[input]);
 	EndTimer("Loading Files");
 	
+
+
 	cout << "Computing..." << endl;
 	minEng.Init("kernal.cl");
+
+	vector<int> sortedData = Sort();
+
 
 	//output results
 	//max
@@ -67,8 +72,8 @@ int main(int argc, char **argv) {
 	cout << "Standard Divation: " << float(sigma / temp.AirTemp().size()) << endl;
 	EndTimer("Standard Divation");
 
-	vector<int> sortedData = Sort();
-	StartTimer();
+	
+	//StartTimer();
 	
 
 
@@ -149,12 +154,12 @@ int Sum(vector<int> values)
 ///Sort setup and exectuion
 vector<int> Sort()
 {
-	vector<int> values(temp.AirTemp().size(), 0);
+	vector<int> values = temp.AirTemp();
 
 	minEng.Clean();
 
-	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
-	minEng.AddBuffer(CL_MEM_READ_WRITE, temp.AirTemp().size() * sizeof(int));
+	minEng.AddBuffer(CL_MEM_READ_ONLY, values);
+	minEng.AddBuffer(CL_MEM_READ_WRITE, values.size() * sizeof(int) + 10);
 	minEng.Execute("OddEvenSort", values);
 
 	return values;
