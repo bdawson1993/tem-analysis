@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 	//serial functions
 	
 	
-	print_V(sortedData);
+	//print_V(sortedData);
 
 	system("pause");
 

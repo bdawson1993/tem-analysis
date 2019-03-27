@@ -5,9 +5,11 @@
 void ComputeEngine::Init(string kernalName)
 {
 	context = GetContext(platformID, deviceID);
-	queue = cl::CommandQueue(context);
+	
 	AddSources(sources,kernalName);
 	program = cl::Program(context, sources);
+
+	queue = cl::CommandQueue(context);
 	
 	//build and debug the kernel code
 	try {
@@ -49,6 +51,7 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, vector<int> data)
 		buffers.push_back(buffer);
 
 		queue.enqueueWriteBuffer(buffer, CL_TRUE, 0, input_size, &data[0]);
+		
 	}
 	catch (const cl::Error& err)
 	{
@@ -63,6 +66,8 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, vector<int> data)
 void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLocal, int localCount)
 {
 	size_t nr_groups = input_elements / local_size;
+	cl::Event ev;
+
 	//cl_event profEvent = clCreateUserEvent(context, 0);
 	//cout << nr_groups << endl;
 	try
@@ -86,11 +91,12 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 
 		//execute kernal
 		
-		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size),0,0);
+		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size), 0, &ev);
 		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, output.size()*sizeof(int), &output[0],0);
+		queue.finish();
 		
 		
-		
+		cout << GetFullProfilingInfo(ev, ProfilingResolution::PROF_US) << endl;
 		
 		
 	}
