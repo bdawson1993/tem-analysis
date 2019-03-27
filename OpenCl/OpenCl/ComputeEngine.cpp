@@ -66,7 +66,7 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, vector<int> data)
 void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLocal, int localCount)
 {
 	size_t nr_groups = input_elements / local_size;
-	cl::Event ev;
+	
 
 	//cl_event profEvent = clCreateUserEvent(context, 0);
 	//cout << nr_groups << endl;
@@ -91,12 +91,12 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 
 		//execute kernal
 		
-		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size), 0, &ev);
+		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size));
 		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, output.size()*sizeof(int), &output[0],0);
-		queue.finish();
+		//queue.finish();
 		
 		
-		cout << GetFullProfilingInfo(ev, ProfilingResolution::PROF_US) << endl;
+		//cout << GetFullProfilingInfo(ev, ProfilingResolution::PROF_US) << endl;
 		
 		
 	}

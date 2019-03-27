@@ -3,14 +3,13 @@
 //works on small data set
 kernel  void Min(global const int* data, global int* min)
 {
-	//Reduction on local
+	//perform any copying
 	int id = get_global_id(0);
 	int N = get_global_size(0);
 	min[id] = data[id];
+	barrier(CLK_GLOBAL_MEM_FENCE); 
 
-	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init and copy
-
-
+	//reduce min
 	for (int i = 0; i < N; i += 2) {
 		if (!(id % (i * 2)) && ((id + i) < N))
 			if (min[id] > min[id + i])
@@ -25,14 +24,13 @@ kernel  void Min(global const int* data, global int* min)
 //works on small data set
 kernel  void Max(global const int* data, global int* min)
 {
-	//Reduction on local
+	//perform any copying
 	int id = get_global_id(0);
 	int N = get_global_size(0);
-	
-
-	barrier(CLK_GLOBAL_MEM_FENCE); //wait for all threads to init and copy
+	barrier(CLK_GLOBAL_MEM_FENCE); 
 
 
+	//reduce max
 	for (int i = 0; i < N; i += 2) {
 		if (!(id % (i * 2)) && ((id + i) < N))
 			if (min[id] < min[id + i])
@@ -47,15 +45,16 @@ kernel  void Max(global const int* data, global int* min)
 //Min for Large Dataset
 kernel void MinL(global const int* data, global int* min, local int* scratch)
 {
-	//Reduction on local
+	//perform any copying
 	int id = get_global_id(0);
 	int N = get_local_size(0);
 	int lid = get_local_id(0);
 
 	scratch[lid] = data[id];
-	barrier(CLK_LOCAL_MEM_FENCE); //wait for all threads to init and copy
+	barrier(CLK_LOCAL_MEM_FENCE);
 
 
+	//reduce min
 	for (int i = 1; i < N; i *= 2) {
 		if (!(lid % (i * 2)) && ((lid + i) < N))
 		{
@@ -68,7 +67,7 @@ kernel void MinL(global const int* data, global int* min, local int* scratch)
 		barrier(CLK_LOCAL_MEM_FENCE);
 	}
 	
-
+	//calculte min of local
 	if (!lid)
 	{
 		atomic_min(&min[0], scratch[lid]);
@@ -86,6 +85,7 @@ kernel void MaxL(global const int* data, global int* min, local int* scratch)
 	barrier(CLK_LOCAL_MEM_FENCE); 
 
 
+	//reduce max
 	for (int i = 1; i < N; i *= 2) {
 		if (!(lid % (i * 2)) && ((lid + i) < N))
 		{
@@ -98,23 +98,23 @@ kernel void MaxL(global const int* data, global int* min, local int* scratch)
 		barrier(CLK_LOCAL_MEM_FENCE);
 	}
 
-
+	//calculte max of local
 	if (!lid)
 	{
 		atomic_max(&min[0], scratch[lid]);
 	}
 }
 
-kernel void Sum(global const int* A, global int* B, local int* scratch) {
+kernel void Sum(global const int* data, global int* sum, local int* scratch) 
+{
+//perform any copying
 	int id = get_global_id(0);
 	int lid = get_local_id(0);
 	int N = get_local_size(0);
-
-	
-	scratch[lid] = A[id];
-
+	scratch[lid] = data[id];
 	barrier(CLK_LOCAL_MEM_FENCE);
 
+	//reduce sum
 	for (int i = 1; i < N; i *= 2) {
 		if (!(lid % (i * 2)) && ((lid + i) < N))
 			scratch[lid] += scratch[lid + i];
@@ -123,9 +123,9 @@ kernel void Sum(global const int* A, global int* B, local int* scratch) {
 	}
 
 	
-
+	//calculte sum of local
 	if (!lid) {
-		atomic_add(&B[0], scratch[lid]);
+		atomic_add(&sum[0], scratch[lid]);
 	}
 
 }
@@ -141,7 +141,7 @@ kernel void SubtractAndSq(global const int* data, global const int* value, globa
 	
 }
 
-//sort functions
+//sort functions - doesn't work
 #define intswap(A,B) {int temp=A;A=B;B=temp;}
 kernel void OddEvenSort(global int * data, global int * sortedData)
 {

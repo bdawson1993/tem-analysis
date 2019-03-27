@@ -27,25 +27,35 @@ Temperture temp;
 
 
 int main(int argc, char **argv) {
-	vector<string> file = {"temp_lincolnshire.txt", "temp_lincolnshire_short.txt" };
+	vector<string> file = { "temp_lincolnshire.txt", "temp_lincolnshire_short.txt" };
 	int input = 0;
+
+
+
+	//print options
 
 	cout << "0 - full dataset" << endl;
 	cout << "1 - short dataset" << endl;
 	cout << "Please enter an option " << endl;
 	cin >> input;
 
+	if (input > 1)
+	{
+		input = 1;
+	}
+
+
+	//load files
 	cout << "Loading Files..." << endl;
 	StartTimer();
 	temp.ReadFile(file[input]);
 	EndTimer("Loading Files");
-	
 
 
 	cout << "Computing..." << endl;
 	minEng.Init("kernal.cl");
 
-	vector<int> sortedData = Sort();
+	//vector<int> sortedData = Sort();
 
 
 	//output results
@@ -72,14 +82,14 @@ int main(int argc, char **argv) {
 	cout << "Standard Divation: " << float(sigma / temp.AirTemp().size()) << endl;
 	EndTimer("Standard Divation");
 
-	
+
 	//StartTimer();
-	
+
 
 
 	//serial functions
-	
-	
+
+
 	//print_V(sortedData);
 
 	system("pause");
@@ -100,7 +110,7 @@ void print_V(vector<int> values)
 ///Max Value
 int Max()
 {
-	vector<int> value(temp.AirTemp().size(),0);
+	vector<int> value(temp.AirTemp().size(), 0);
 
 	minEng.Clean();
 	minEng.AddBuffer(CL_MEM_READ_ONLY, temp.AirTemp());
@@ -146,7 +156,7 @@ int Sum(vector<int> values)
 	minEng.AddBuffer(CL_MEM_READ_ONLY, values);
 	minEng.AddBuffer(CL_MEM_READ_WRITE, values.size() * sizeof(int));
 	minEng.Execute("Sum", value, true);
-	
+
 	return value[0];
 
 }
