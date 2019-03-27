@@ -142,8 +142,13 @@ kernel void SubtractAndSq(global const int* data, global const int* value, globa
 }
 
 //sort functions
-#define intswap(A,B) {int temp=A;A=B;B=temp;}
-#define cmpxchg(a,b) {if (a > b) intswap(a,b);}
+void cmpxchg(global int* A, global int* B)
+{
+	if (*A > *B) {
+		int t = *A; *A = *B; *B = t;
+	}
+}
+
 kernel void OddEvenSort(global int * data, global int * sortedData)
 {
 	int id = get_global_id(0);
@@ -152,34 +157,30 @@ kernel void OddEvenSort(global int * data, global int * sortedData)
 	barrier(CLK_GLOBAL_MEM_FENCE);
 
 
-	//odd pass
-	for (int i = 1; i < size - 1; i++)
+	
+	for (int i = 0; i < size; i+=2)
 	{
-		if (((i % 2) != 0) && ((id % 2) != 0))
+		if (id % 2 == 0 && id + 1 < size) //even pass
 		{
-			if (sortedData[id] > sortedData[id + 1])
-			{
-				intswap(sortedData[id], sortedData[id + i]);
-			}
+			cmpxchg(&sortedData[id], &sortedData[id + 1]);
 		}
+
+		barrier(CLK_GLOBAL_MEM_FENCE);
+
+		if (id % 2 == 1 && id + 1 < size) //odd pass
+		{
+			cmpxchg(&sortedData[id], &sortedData[id + 1]);
+		}
+
 		barrier(CLK_GLOBAL_MEM_FENCE);
 	}
-
-
-	//barrier(CLK_GLOBAL_MEM_FENCE);
-	//even pass
-	for (int i = 1; i < size - 1; i++)
-	{
-		if (((i % 2) == 0) && ((id % 2) == 0))
-		{
-			if (sortedData[id] > sortedData[id + 1])
-			{
-				intswap(sortedData[id], sortedData[id + i]);
-			}
-		}
-		barrier(CLK_GLOBAL_MEM_FENCE);
-	}
+	
 }
+
+
+
+
+
 
 
 

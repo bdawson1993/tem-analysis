@@ -44,7 +44,7 @@ private:
 	vector<cl::Buffer> buffers;
 
 	size_t input_size = 0;
-	size_t local_size = 256; //12;
+	size_t local_size = 10; //12;
 	size_t padding_size = 0;
 	size_t input_elements = 0;
 

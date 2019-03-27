@@ -35,10 +35,6 @@ int main(int argc, char **argv) {
 	cout << "Please enter an option " << endl;
 	cin >> input;
 
-	
-	
-	
-	
 	cout << "Loading Files..." << endl;
 	StartTimer();
 	temp.ReadFile(file[input]);
@@ -63,7 +59,6 @@ int main(int argc, char **argv) {
 	cout << "Mean: " << Sum() / temp.AirTemp().size() << endl;
 	EndTimer("Mean");
 
-
 	//STD
 	StartTimer();
 	int avg = Sum() / temp.AirTemp().size();
@@ -72,17 +67,15 @@ int main(int argc, char **argv) {
 	cout << "Standard Divation: " << float(sigma / temp.AirTemp().size()) << endl;
 	EndTimer("Standard Divation");
 
-
-	StartTimer();
 	vector<int> sortedData = Sort();
-	EndTimer("Sort");
+	StartTimer();
+	
 
-	print_V(sortedData);
 
 	//serial functions
 	
 	
-
+	print_V(sortedData);
 
 	system("pause");
 
@@ -167,6 +160,7 @@ vector<int> Sort()
 	return values;
 
 }
+
 
 
 ///Subtract and Square 
