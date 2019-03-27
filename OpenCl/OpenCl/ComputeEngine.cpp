@@ -8,7 +8,7 @@ void ComputeEngine::Init(string kernalName)
 	queue = cl::CommandQueue(context);
 	AddSources(sources,kernalName);
 	program = cl::Program(context, sources);
-
+	
 	//build and debug the kernel code
 	try {
 		program.build();
@@ -63,10 +63,12 @@ void ComputeEngine::AddBuffer(cl_mem_flags flag, vector<int> data)
 void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLocal, int localCount)
 {
 	size_t nr_groups = input_elements / local_size;
+	//cl_event profEvent = clCreateUserEvent(context, 0);
 	//cout << nr_groups << endl;
 	try
 	{
 		cl::Kernel kernal =  cl::Kernel(program, funName);
+		
 		int index = 0;
 		for (index = 0;index <= buffers.size() - 1; index++)
 		{
@@ -83,8 +85,12 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 		}
 
 		//execute kernal
-		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size));
-		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, output.size()*sizeof(int), &output[0]);
+		
+		queue.enqueueNDRangeKernel(kernal, cl::NullRange, cl::NDRange(input_elements), cl::NDRange(local_size),0,0);
+		queue.enqueueReadBuffer(buffers.back(), CL_TRUE, 0, output.size()*sizeof(int), &output[0],0);
+		
+		
+		
 		
 		
 	}
@@ -95,7 +101,7 @@ void ComputeEngine::Execute(const char* funName, vector<int>& output, bool useLo
 
 	
 	
-
+	
 
 }
 
