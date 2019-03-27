@@ -23,13 +23,25 @@ ComputeEngine minEng;
 Temperture temp;
 
 
+
+
+
 int main(int argc, char **argv) {
+	vector<string> file = {"temp_lincolnshire.txt", "temp_lincolnshire_short.txt" };
+	int input = 0;
+
+	cout << "0 - full dataset" << endl;
+	cout << "1 - short dataset" << endl;
+	cout << "Please enter an option " << endl;
+	cin >> input;
+
+	
 	
 	
 	
 	cout << "Loading Files..." << endl;
 	StartTimer();
-	temp.ReadFile("temp_lincolnshire.txt");
+	temp.ReadFile(file[input]);
 	EndTimer("Loading Files");
 	
 	cout << "Computing..." << endl;
@@ -87,6 +99,7 @@ void print_V(vector<int> values)
 	cout << "}";
 }
 
+///Max Value
 int Max()
 {
 	vector<int> value(temp.AirTemp().size(),0);
@@ -99,6 +112,7 @@ int Max()
 	return value[0];
 }
 
+///Min value
 int Min()
 {
 	vector<int> value(temp.AirTemp().size(), 0);
@@ -111,6 +125,7 @@ int Min()
 	return value[0];
 }
 
+///Sum of all values
 int Sum()
 {
 	vector<int> value(temp.AirTemp().size(), 0);
@@ -124,6 +139,7 @@ int Sum()
 	return value[0];
 }
 
+///Sum of all values
 int Sum(vector<int> values)
 {
 	vector<int> value(values.size(), 0);
@@ -137,6 +153,7 @@ int Sum(vector<int> values)
 
 }
 
+///Sort setup and exectuion
 vector<int> Sort()
 {
 	vector<int> values(temp.AirTemp().size(), 0);
@@ -151,6 +168,8 @@ vector<int> Sort()
 
 }
 
+
+///Subtract and Square 
 vector<int> SubtractAndSqaure(int mean)
 {
 	vector<int> value(temp.AirTemp().size(), 0);
